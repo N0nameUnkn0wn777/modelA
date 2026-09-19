@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Применение Модели А для 16 ТИМов | Практическая Соционика</title>
+    <style>
+        :root {
+            --bg-color: #008080;
+            --card-bg: #c0c0c0;
+            --card-border: #000000;
+            --accent-primary: #000080;
+            --accent-hover: #0000aa;
+            --text-main: #000000;
+            --text-muted: #333333;
+            --alpha-color: #000080;
+            --beta-color: #800000;
+            --gamma-color: #808000;
+            --delta-color: #008000;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Tahoma, 'MS Sans Serif', 'Microsoft Sans Serif', Arial, sans-serif;
+            border-radius: 0;
+        }
+
+        code, pre, .terminal {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        summary {
+            background-color: #000080;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 6px 10px;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        canvas, .stars, .starfield, .grid-overlay, .scanlines, [class*="scanline"], .glow {
+            display: none !important;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background-color: #000080;
+            padding: 14px 20px;
+            text-align: center;
+            border-bottom: 2px solid #000000;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 1.7rem;
+            color: #ffffff;
+            font-weight: bold;
+            margin-bottom: 4px;
+            text-shadow: none;
+        }
+
+        header p {
+            color: #c0c0c0;
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 0.85rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 18px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background-color: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #404040 #404040 #ffffff;
+            color: #000000;
+            padding: 4px 12px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.8rem;
+            margin: 2px;
+        }
+
+        .nav-btn:hover,
+        .nav-btn:focus {
+            background-color: #000080;
+            color: #ffffff;
+            border-color: #1084d0 #000000 #000000 #1084d0;
+        }
+
+        .nav-btn:active {
+            background-color: #000080;
+            color: #ffffff;
+            border-color: #404040 #ffffff #ffffff #404040;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .quadra-title {
+            font-size: 1.5rem;
+            margin: 32px 0 16px 0;
+            padding: 8px 12px;
+            background-color: #000080;
+            color: #ffffff;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid;
+            border-color: #1084d0 #000000 #000000 #1084d0;
+        }
+
+        .quadra-alpha { border-bottom: 3px solid #800000; }
+        .quadra-beta { border-bottom: 3px solid #808000; }
+        .quadra-gamma { border-bottom: 3px solid #008000; }
+        .quadra-delta { border-bottom: 3px solid #008080; }
+
+        .tim-card {
+            background-color: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            margin-bottom: 28px;
+            overflow: hidden;
+            box-shadow: none;
+        }
+
+        .tim-header {
+            padding: 10px 14px;
+            background-color: #000080;
+            border-bottom: 3px solid #1084d0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tim-title h2 {
+            font-size: 1.3rem;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .tim-title span {
+            font-size: 0.85rem;
+            color: #c0c0c0;
+            font-weight: normal;
+        }
+
+        .tim-motto {
+            font-style: italic;
+            color: #ffd966;
+            font-size: 0.85rem;
+            background: transparent;
+            padding: 2px 8px;
+            border: 1px solid #333333;
+        }
+
+        .blocks-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 14px;
+        }
+
+        .block-box {
+            background-color: #c0c0c0;
+            border: 1px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 12px;
+        }
+
+        .block-name {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            color: #000000;
+        }
+
+        .block-ego { color: #800000; }
+        .block-superego { color: #808000; }
+        .block-superid { color: #000080; }
+        .block-id { color: #008000; }
+
+        .func-item {
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+
+        .func-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .func-header {
+            font-weight: bold;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .func-num {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: #c0c0c0;
+            border: 1px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            border-radius: 0;
+            text-align: center;
+            line-height: 18px;
+            font-size: 0.75rem;
+            color: #000000;
+        }
+
+        .func-desc {
+            color: #000000;
+            margin-top: 3px;
+            font-size: 0.85rem;
+            padding-left: 26px;
+        }
+
+        .theory-intro {
+            background-color: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #000000 #000000 #ffffff;
+            padding: 20px;
+            margin: 28px auto;
+        }
+
+        .theory-intro h3 {
+            margin-bottom: 10px;
+            color: #000080;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .blocks-grid {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Модель А в лицах: 16 Социотипов</h1>
+    <p>Полное анатомическое руководство по обработке реальности информационным аппаратом человеческой психики. Основано на концепции Аушры Аугустинавичюте.</p>
+</header>
+
+<div class="container">
+
+    <div class="theory-intro">
+        <h3>Как читать этот справочник:</h3>
+        <p>Каждый ТИМ разложен по 8 функциям Модели А, сгруппированным в 4 горизонтальных блока:</p>
+        <ul style="margin-left: 20px; margin-top: 8px; font-size: 0.9rem; color: #333333;">
+            <li><strong style="color: #800000;">Блок ЭГО (1, 2)</strong> — Заводские настройки мастерства и творческий инструмент меняния мира.</li>
+            <li><strong style="color: #808000;">Блок СУПЕР-ЭГО (3, 4)</strong> — Социальная маска и «пятка Ахиллеса», источник стыда и паники.</li>
+            <li><strong style="color: #000080;">Блок СУПЕР-ИД (5, 6)</strong> — Кнопки детской радости, где мы наивны, внушаемы и жаждем заботы.</li>
+            <li><strong style="color: #008000;">Блок ИД (7, 8)</strong> — Невидимый фоновый спецназ: работает автоматически, без лишних слов.</li>
+        </ul>
+    </div>
+
+    <div class="nav-container">
+        <a href="#ile" class="nav-btn">Дон Кихот</a>
+        <a href="#sei" class="nav-btn">Дюма</a>
+        <a href="#ese" class="nav-btn">Гюго</a>
+        <a href="#lii" class="nav-btn">Робеспьер</a>
+        <a href="#eie" class="nav-btn">Гамлет</a>
+        <a href="#sle" class="nav-btn">Жуков</a>
+        <a href="#iei" class="nav-btn">Есенин</a>
+        <a href="#lsi" class="nav-btn">Максим Горький</a>
+        <a href="#see" class="nav-btn">Наполеон</a>
+        <a href="#ili" class="nav-btn">Бальзак</a>
+        <a href="#lie" class="nav-btn">Джек Лондон</a>
+        <a href="#esi" class="nav-btn">Драйзер</a>
+        <a href="#lse" class="nav-btn">Штирлиц</a>
+        <a href="#eii" class="nav-btn">Достоевский</a>
+        <a href="#iee" class="nav-btn">Гексли</a>
+        <a href="#sli" class="nav-btn">Габен</a>
+    </div>
+
+    <!-- МОДЕЛЬ А: ТЕОРИЯ И ФУНКЦИИ (единый блок) -->
+    <div class="tim-card">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>Восемь функций психики</h2>
+
+            </div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">Введение: Модель А — карта психиса</div>
+                <div class="func-desc">Если тип личности (ТИМ) в соционике — это название вашей операционной системы, то психологические функции — это её конкретные программные модули, каждый из которых отвечает за обработку определённого вида информации. Эти модули выстроены в строгом порядке, образуя Модель А — карту вашего психического пространства.</div>
+                <div class="func-desc">Понимание функций — ключ к глубокому самоанализу. Вы узнаете, почему вам легко даётся анализ систем (сильная логика), но сложно проявлять эмоции на публике (слабая этика), или как вы бессознательно ищете в других людях то, что не можете дать себе сами.</div>
+            </div>
+
+            <!-- 1. Базовая -->
+            <div class="block-box">
+                <div class="block-name block-ego"><span>1. Базовая (Программная)</span><span>Ведущая, Фоновая</span></div>
+                <div class="func-desc"><strong>Суть:</strong> Основа личности, «стержень». Это ваша естественная, уверенная и творческая манера восприятия мира. Функция, на которой строится вся жизненная программа.</div>
+                <div class="func-desc"><strong>Даёт:</strong> Уверенность, компетентность, неиссякаемый ресурс. Вы используете её автоматически, как родной язык.</div>
+            </div>
+
+            <!-- 2. Творческая -->
+            <div class="block-box">
+                <div class="block-name block-ego"><span>2. Творческая (Исполнительная)</span><span>Реализующая</span></div>
+                <div class="func-desc"><strong>Суть:</strong> Инструмент для реализации базовой. Гибкая, ситуативная функция. Показывает, как и в какой форме вы применяете свою базовую программу в реальности.</div>
+                <div class="func-desc"><strong>Даёт:</strong> Гибкость, адаптивность, творческий подход. Помогает «продать» идеи базовой функции миру.</div>
+            </div>
+
+            <!-- 3. Ролевая -->
+            <div class="block-box">
+                <div class="block-name block-superego"><span>3. Ролевая</span><span>Нормирующая, Маска</span></div>
+                <div class="func-desc"><strong>Суть:</strong> Социальная «маска». Этой функцией вы сознательно пытаетесь пользоваться в незнакомой или формальной обстановке, чтобы соответствовать ожиданиям. Тратит много энергии.</div>
+                <div class="func-desc"><strong>Даёт:</strong> Социальная адаптация. Позволяет «быть как все» в нужных ситуациях, но вызывает усталость.</div>
+            </div>
+
+            <!-- 4. Болевая -->
+            <div class="block-box">
+                <div class="block-name block-superego"><span>4. Болевая (ТНС)</span><span>Точка наименьшего сопротивления, Уязвимая</span></div>
+                <div class="func-desc"><strong>Суть:</strong> Самое слабое и болезненное место. Критика или давление по этой функции вызывают сильную фрустрацию, обиду, сбивают с толку. Вы нуждаетесь в тактичной помощи по ней.</div>
+                <div class="func-desc"><strong>Даёт:</strong> Источник обид и комплексов. Указывает на зону, где требуется поддержка, а не критика.</div>
+            </div>
+
+            <!-- 5. Внушаемая -->
+            <div class="block-box">
+                <div class="block-name block-superid"><span>5. Внушаемая (Суггестивная)</span><span>Внутренний запрос</span></div>
+                <div class="func-desc"><strong>Суть:</strong> Глубинная потребность, «бесплатный сыр», которую вы плохо осознаёте и не можете удовлетворить самостоятельно. Идеальная «мишень» для мягкого влияния извне (особенно от дуала).</div>
+                <div class="func-desc"><strong>Даёт:</strong> Источник комфорта и расслабления. Когда кто-то аккуратно наполняет эту функцию, вы чувствуете покой и доверие.</div>
+            </div>
+
+            <!-- 6. Активационная -->
+            <div class="block-box">
+                <div class="block-name block-superid"><span>6. Активационная (Референтная)</span><span>Оценочная</span></div>
+                <div class="func-desc"><strong>Суть:</strong> Зона радости и интереса. Сравнительно слабая, но приятная вам функция. Вы любите, когда другие демонстрируют её в лёгкой, ненавязчивой форме. Повышает настроение и тонус.</div>
+                <div class="func-desc"><strong>Даёт:</strong> Источник позитивных эмоций и лёгкого общения. Обсуждение тем этой функции приятно и бодрит.</div>
+            </div>
+
+            <!-- 7. Ограничительная -->
+            <div class="block-box">
+                <div class="block-name block-id"><span>7. Ограничительная (Наблюдательная)</span><span>Контрольная</span></div>
+                <div class="func-desc"><strong>Суть:</strong> Внутренний «надзиратель». Этой функцией вы неосознанно проверяете и ограничиваете других, замечая перегибы и нелогичности в их действиях. Может звучать как беспристрастная критика.</div>
+                <div class="func-desc"><strong>Даёт:</strong> Защита от излишеств. Помогает держать дистанцию и фильтровать информацию извне.</div>
+            </div>
+
+            <!-- 8. Фоновая -->
+            <div class="block-box">
+                <div class="block-name block-id"><span>8. Фоновая (Демонстративная)</span><span>Автоматическая</span></div>
+                <div class="func-desc"><strong>Суть:</strong> Незаметная компетентность. Сильная функция, которая работает автоматически, в фоновом режиме, без усилий и внимания. Вы даже не замечаете, как её используете, и удивляетесь, когда другим это сложно.</div>
+                <div class="func-desc"><strong>Даёт:</strong> Незаметное мастерство. То, что вы делаете легко и мимоходом, часто вызывая удивление окружающих.</div>
+            </div>
+
+            <!-- Блоки Модели А -->
+            <div class="block-box">
+                <div class="block-name block-ego">Блок ЭГО (1-я и 2-я): Ваше «Я»</div>
+                <div class="func-desc"><strong>Состав:</strong> Базовая (1) и Творческая (2).</div>
+                <div class="func-desc">Это сильные, осознанные и ценностные функции. Ваша главная сила, творческий потенциал и внутренняя система координат. Вы уверены в них, активно их используете и через них проявляете свою личность.</div>
+            </div>
+
+            <div class="block-box">
+                <div class="block-name block-superego">Блок СУПЕРЭГО (3-я и 4-я): ответственность и долг</div>
+                <div class="func-desc"><strong>Состав:</strong> Ролевая (3) и Болевая (4).</div>
+                <div class="func-desc">Слабые, но осознанные функции. Вы понимаете, что они у вас есть, и чувствуете социальную ответственность за их развитие. Однако они требуют больших усилий и являются источником стресса. Блок комплексов и работы над собой.</div>
+            </div>
+
+            <div class="block-box">
+                <div class="block-name block-superid">Блок СУПЕРИД (5-я и 6-я): внутренние запросы</div>
+                <div class="func-desc"><strong>Состав:</strong> Внушаемая (5) и Активационная (6).</div>
+                <div class="func-desc">Слабые и неосознанные функции. Ваши глубинные потребности и источники удовольствия. Вы плохо контролируете эту сферу, но она определяет, что приносит вам комфорт (5-я) и лёгкую радость (6-я). Идеальная зона для мягкой поддержки извне.</div>
+            </div>
+
+            <div class="block-box">
+                <div class="block-name block-id">Блок ИД (7-я и 8-я): автоматические реакции</div>
+                <div class="func-desc"><strong>Состав:</strong> Ограничительная (7) и Фоновая (8).</div>
+                <div class="func-desc">Сильные, но неосознанные функции. Ваши автоматические фильтры и невидимая компетентность. Вы не придаёте им значения, но постоянно используете для фоновой оценки мира (7-я) и решения задач «на автомате» (8-я).</div>
+            </div>
+
+            <!-- Практическое применение -->
+            <div class="block-box">
+                <div class="block-name block-superego">Почему это знание — практический инструмент?</div>
+                <div class="func-desc"><strong>Самопознание и принятие:</strong> Вы перестанете корить себя за «слабости» (болевая, ролевая), понимая их природу, и научитесь опираться на истинные силы (блок Эго).</div>
+                <div class="func-desc"><strong>Отношения и дуальность:</strong> Вы поймёте, почему с одними людьми легко (они наполняют вашу внушаемую функцию), а с другими — конфликтно (они давят на болевую).</div>
+                <div class="func-desc"><strong>Карьера и развитие:</strong> Осознание сильных блоков (Эго, Ид) помогает выбрать деятельность, где вы будете эффективны и удовлетворены, не тратя силы на прокачку болезненно слабых функций.</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- КВАДРА АЛЬФА -->
+    <h2 class="quadra-title quadra-alpha">Квадра Альфа — Искатели и Романтики</h2>
+
+    <!-- 1. ИЛЭ (Дон Кихот) -->
+    <div class="tim-card" id="ile">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>ИЛЭ — Интуитивно-логический экстраверт <small>(Дон Кихот)</small></h2>
+                <span>Искатель компонентов мироздания</span>
+            </div>
+            <div class="tim-motto">«А что, если построить телепорт из супа и изоленты?»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Видит 500 вариантов развития событий там, где нормальный человек видит просто стену. Генерирует гениальные идеи со скоростью пулемета.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Быстро упаковывает безумную идею в строгую схему. Если реальность не влезает в схему — тем хуже для реальности.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">При знакомстве пыжится, старается выглядеть суровым и волевым доминатором. Быстро устает и снова становится мягким хаотичным ученым.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Ужас при вопросе «Как ты ко мне относишься?». Намеков не понимает, чужие обиды вызывают зависание системы.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Забывает поесть, пока не падает в обморок. Готов душу отдать за того, кто молча завернет его в плед и даст горячий суп.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Расцветает от искреннего веселья и движухи вокруг. Загорается энергии, если его идеи встретили бурными аплодисментами.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Резко пресекает чужое занудство о сроках: «Не капай на мозги, успеем!», хотя сам может опоздать на три часа.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Фоном умеет починить всё на свете из подручных средств, но считает эту работу слишком скучной, чтобы ею хвастаться.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. СЭИ (Дюма) -->
+    <div class="tim-card" id="sei">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>СЭИ — Сенсорно-этический интроверт <small>(Дюма)</small></h2>
+                <span>Посредник и гедонист</span>
+            </div>
+            <div class="tim-motto">«Мир подождет, пока мы пьем этот идеальный какао»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Гений комфорта. Чувствует малейший сквозняк, неудобный стул или оттенки вкуса в блюде. Создает уют везде, где садится.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Мастерски управляет атмосферой. Растопит любой конфликт шуткой, мягкой улыбкой или вовремя поднесенной пироженкой.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: БИ (Интуиция времени)</div>
+                    <div class="func-desc">На людях пытается выглядеть пунктуальным и дальновидным стратегическим планировщиком. На деле живет моментом.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Графики эффективности и сухое требование «оптимизировать процессы» вызывают зубную боль. Не любитель считать дебет с кредитом.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Обожает людей с безумными фантазиями. Смотрит на них как на марсиан и с открытым ртом слушает их концепции.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Успокаивается и приходит в восторг, когда ему раскладывают хаос по понятным полочкам и логическим категориям.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Если кто-то наглеет, тихо, но намертво перекрывает доступ к ресурсам и телу. Надавить на него физически практически невозможно.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Со всеми поддерживает ровные, приятные отношения на автопилоте, даже не задумываясь о том, как у него это получается.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ЭСЭ (Гюго) -->
+    <div class="tim-card" id="ese">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>ЭСЭ — Этико-сенсорный экстраверт <small>(Гюго)</small></h2>
+                <span>Энтузиаст и генератор праздника</span>
+            </div>
+            <div class="tim-motto">«Почему никто не радуется?! Сейчас я вас устрою праздник!»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Мощный эмоциональный реактор. Способен заразить своим настроением целый стадион. Не умеет и не хочет скрывать чувства.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Заботится на убой: накормит, обогреет, наденет шапку. В его доме физически невозможно остаться голодным или немытым.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Очень старается выглядеть деловым, хлопотливым и сугубо практичным человеком, заваливая себя кучей мелких задач.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Ненавидит неопределенность и ожидания. Фраза «посмотрим по ситуации» вгоняет в панику. Стрессует от опозданий.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Замирает от уважения перед сухими, умными схемами и спокойными интеллектуалами, поясняющими устройство мира.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Расцветает от новых перспектив, неожиданных идей и альтернативных взглядов на привычные вещи.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Резко обрезает фальшивые или токсичные связи: «Если ты врешь, ты мне больше не друг, пока!».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Фоном легко защищает свое пространство и близких, прошибая любые бюрократические стены без лишнего шума.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. ЛИИ (Робеспьер) -->
+    <div class="tim-card" id="lii">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>ЛИИ — Логико-интуитивный интроверт <small>(Робеспьер)</small></h2>
+                <span>Аналитик и архитектор систем</span>
+            </div>
+            <div class="tim-motto">«Все должно быть справедливо и классифицировано»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Идеальный кристалл мышления. Все явления раскладываются на теории, аксиомы и строгие логические законы.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Ищет альтернативные гипотезы для совершенствования своей системы. Видит скрытую суть вещей и глубокие взаимосвязи.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Привередливо вежлив и корректен в обществе. Старается соблюдать все этикетные нормы, чтобы никого не задеть случайно.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Прямое физическое или эмоциональное давление вызывает стопор или взрыв. Не переносит волюнтаризма и хамства.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Нуждается в ярких, теплоэмоциональных людях. Сам суховат, но расцветает, когда его «отогревают» искренним смехом.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">С благодарностью принимает заботу о своем быте и здоровье, так как сам часто забывает о требованиях тела.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Отсекает неэффективные суетливые действия: «Зачем делать бессмысленную работу, если процесс не оптимизирован?».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Фоном отлично чувствует время, никогда не опаздывает без причины и знает, когда процесс созрел.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- КВАДРА БЕТА -->
+    <h2 class="quadra-title quadra-beta">Квадра Бета — Воители и Стратеги</h2>
+
+    <!-- 5. ЭИЭ (Гамлет) -->
+    <div class="tim-card" id="eie">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>ЭИЭ — Этико-интуитивный экстраверт <small>(Гамлет)</small></h2>
+                <span>Наставник и трагический актер</span>
+            </div>
+            <div class="tim-motto">«Быть или не быть? Вот в чем драматический вопрос!»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Мастер высокооктанового эмоционального воздействия. Видит мир как грандиозную театральную сцену, полную страстей.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Чувствует исторические моменты и неизбежность катастроф. Прекрасно манипулирует темпом, создавая нужный драматический момент.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Пытается выглядеть собранным профессионалом, засыпает терминами, но быстро устает от рутинной работы.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Физиологические подробности, болезни или неуклюжие бытовые заботы вызывают брезгливость и глубокий дискомфорт.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Успокаивается только тогда, когда ему четко и хладнокровно объясняют правила игры и железные логические рамки.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Восхищается силой, авторитетом и решительностью. Включается в работу, когда видит сильного лидера.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Мгновенно пресекает чужое "неправильное" отношение или попытку манипулировать моралью: «Не смей со мной так разговаривать!».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Фоном прекрасно генерирует альтернативные катастрофические сценарии, чтобы обезопасить себя и команду.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. СЛЭ (Жуков) -->
+    <div class="tim-card" id="sle">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>СЛЭ — Сенсорно-логический экстраверт <small>(Жуков)</small></h2>
+                <span>Маршал и завоеватель</span>
+            </div>
+            <div class="tim-motto">«Вижу цель, не вижу препятствий. Препятствия — снести»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Сканер территории и расстановки сил. Моментально видит слабые места, захватывает контроль и продавливает решения.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Строит железную тактическую схему для победы. Использование законов и иерархий как оружия для подчинения реальности.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Показывает себя широких взглядов человеком, оригиналом и генератором идей, хотя на деле предпочитает понятную классику.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Абсолютно не понимает тонких движений души: «Ты меня любишь или уважительно относишься? Скажи прямо!». Боится быть обманутым.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Беспомощен перед вопросами будущего. Искренне благодарен тому, кто спрогнозирует идеальный момент для удара.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Заряжается от эмоционального подъема вокруг. Ему нужен тот, кто разбавит его суровую жизнь искренней радостью.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Без лишних слов пресекает физический дискомфорт, боли или жалобы со стороны: «Сопли подбери, некогда болеть».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Молча и эффективно организует любой материальный процесс или стройку без долгих теоретических разговоров.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. ИЭИ (Есенин) -->
+    <div class="tim-card" id="iei">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>ИЭИ — Интуитивно-этический интроверт <small>(Есенин)</small></h2>
+                <span>Лирик и вдохновитель</span>
+            </div>
+            <div class="tim-motto">«Все будет хорошо, я узнавал у Вселенной»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Мастер плыть по течению времени. Знает, когда нужно подождать, а когда всё случится само собой. Поэт и мечтатель.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Тончайшая манипуляция настроением. Умеет вызвать нужную эмоцию — от светлой грусти до романтического восторга.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Притворяется знатоком стиля и уюта, старается выглядеть ухоженным и грациозным, но быстро утомляется бытовой рутиной.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Требование «работать по инструкции» и быть экономически эффективным вызывают экзистенциальный ужас.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Подсознательно ищет сильного, уверенного партнера, который придет, победит всех драконов и решит все проблемы.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Расцветает, когда ему системно и ясно объясняют логику происходящего без криков и эмоционального хаоса.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Мягко отсекает лишние или суетливые альтернативы: «Не надо изобретать велосипед, мы пойдём другим путём».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Фоном располагает к себе людей, избегая прямых конфликтов и незаметно сглаживая острые углы.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. ЛСИ (Максим Горький) -->
+    <div class="tim-card" id="lsi">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>ЛСИ — Логико-сенсорный интроверт <small>(Максим Горький)</small></h2>
+                <span>Хранитель порядка и инспектор</span>
+            </div>
+            <div class="tim-motto">«Порядок освобождает мысль. Все по инструкции»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Создатель безупречных систем, уставов и регламентов. В его мире у каждого винтика есть свое законодательно закрепленное место.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Инструмент внедрения порядка. Умеет методично, без лишнего шума дожать выполнение правил до полного идеала.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: БЭ (Этика отношений)</div>
+                    <div class="func-desc">В незнакомой компании подчеркнуто вежлив, держит дистанцию, старается соблюдать нормы приличия до грамма.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Непредсказуемость и хаос вызывают сильный стресс. Внезапная смена планов воспринимается как личное предательство.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Нуждается в ярких, эмоциональных людях, способных разморозить его суровый рациональный внутренний мир.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Расслабляется, когда ему даются четкие временные прогнозы: «Все идет по плану, результат будет ровно в 18:00».</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Пресекает халтуру и бессмысленную суету на корню: «Работаем строго по регламенту, никаких самоделок».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Фоном поддерживает идеальную чистоту и порядок в своих вещах, даже не замечая, как он это делает.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- КВАДРА ГАММА -->
+    <h2 class="quadra-title quadra-gamma">Квадра Гамма — Прагматики и Реформаторы</h2>
+
+    <!-- 9. СЭЭ (Наполеон) -->
+    <div class="tim-card" id="see">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>СЭЭ — Сенсорно-этический экстраверт <small>(Наполеон)</small></h2>
+                <span>Политик и лидер влияния</span>
+            </div>
+            <div class="tim-motto">«Пришел, увидел, очаровал и возглавил»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Естественное расширение зоны влияния. Управляет людскими ресурсами, статусом и авторитетом с легкостью дышащего человека.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Гибкая манипуляция отношениями. Умеет обволакивать, заводить нужные связи и моментально расставлять нужные дистанции.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Любит казаться оригиналом, провидцем и инноватором, демонстрируя свои многочисленные "уникальные" таланты.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Не переносит скучные инструкции, формулы и когда его заставляют логически обосновывать свои спонтанные решения.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Тянется к стратегически мыслящим людям, способным уберечь его от опрометчивых поступков и предсказать финал.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Загорается, когда видит реальную выгоду и эффективные практические способы заработать или сделать дело.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Игнорирует мелкий физический дискомфорт и жестко отсекает попытки других «опекать» его в быту.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Фоном закатывает яркие сцены или дарит бурные эмоции, если это помогает моментально решить практическую задачу.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. ИЛИ (Бальзак) -->
+    <div class="tim-card" id="ili">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>ИЛИ — Интуитивно-логический интроверт <small>(Бальзак)</small></h2>
+                <span>Критик и мудрец</span>
+            </div>
+            <div class="tim-motto">«Все это уже было, и все это плохо закончится»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Глубокое видение трендов, исторического потока и неизбежных ошибок. Мастер скептического и точного прогноза.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Знает, как затратить минимум усилий и получить максимум результата. Мастер экономии ресурсов и оценки рисков.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Старается выглядеть сибаритом, знатоком хорошей кухни и удобства, но делает это скорее «по правилам».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Терпеть не может истерик, восторженного визга и требовании «покажи радость!». Эмоциональный прессинг вызывает отторжение.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Подсознательно ждет волевого толчка извне. С уважением подчиняется решительной силе, которая знает, куда идти.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Тает, когда к нему проявляют искреннее, доброе, теплое отношение без фальши и громких манифестов.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Блокирует иллюзорные идеи: «Это не сработает, потому что 90% подобных проектов рушатся в первый месяц».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Фоном моментально видит логические неувязки в любых теориях, легко разбивая их без подготовки.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. ЛИЭ (Джек Лондон) -->
+    <div class="tim-card" id="lie">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>ЛИЭ — Логико-интуитивный экстраверт <small>(Джек Лондон)</small></h2>
+                <span>Предприниматель и экспериментатор</span>
+            </div>
+            <div class="tim-motto">«Время — деньги! Запускаем стартап прямо сейчас»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Непрерывный поиск эффективности, оптимизации и заработка. Видит материальный мир как поле для выгодных действий.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Потрясающее чувство момента. Опережает конкурентов, быстро внедряет инновации и любит динамичные авантюры.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Пытается быть «своим парнем», душой компании, много шутит, но его юмор и эмоциональность могут выглядеть немного утрированно.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Абсолютно не умеет отдыхать и ухаживать за здоровьем. Может ходить в дырявых кроссовках и забывать помыться в походе.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Ищет морального ориентира. Нуждается в партнере, который четко скажет, кто ему друг, а кто враг.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Загорается от сложных вызовов, спортивных состязаний и работы в условиях жесткой конкуренции.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Сходу отбрасывает пустые формальности и сухую бюрократию: «Нам некогда бумажки писать, надо делать!».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Фоном видит миллион открытых дверей и альтернативных путей, если один из вариантов неожиданно закроется.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. ЭСИ (Драйзер) -->
+    <div class="tim-card" id="esi">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>ЭСИ — Этико-сенсорный интроверт <small>(Драйзер)</small></h2>
+                <span>Хранитель морали и защитник</span>
+            </div>
+            <div class="tim-motto">«Совесть — главный закон, и я его соблюдаю»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Сканер моральных качеств. Моментально чувствует фальшь, предательство, непорядочность и строго делит людей на «своих» и «чужих».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Инструмент защиты своих моральных принципов и близких. Умеет дать жесткий и принципиальный отпор любому агрессору.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Старается выглядеть исключительно логичным, правильным, законопослушным гражданином, ссылаясь на правила и нормативы.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Ужасно не любит неопределенность и подвохи. В новых непроверенных вариантах видит прежде всего скрытую опасность.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">С благодарностью принимает четкие алгоритмы, помощь в работе, бизнесе и практической организации жизни.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Расслабляется рядом с людьми, умеющими успокоить своевременным прогнозом и избавить от спешки.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Пресекает бурные ненастоящие эмоции и панику: «Перестань истерить, давай говорить по делу».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Фоном держит быт в чистоте, обеспечивает семью едой и порядком без долгих обсуждений процесса.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- КВАДРА ДЕЛЬТА -->
+    <h2 class="quadra-title quadra-delta">Квадра Дельта — Гуманисты и Созидатели</h2>
+
+    <!-- 13. ЛСЭ (Штирлиц) -->
+    <div class="tim-card" id="lse">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>ЛСЭ — Логико-сенсорный экстраверт <small>(Штирлиц)</small></h2>
+                <span>Управляющий и хозяин</span>
+            </div>
+            <div class="tim-motto">«Если делать — то идеально и с выверенным качеством»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Властелин рабочих процессов, технологий и трудовой дисциплины. Качественно организует любое дело на 100%.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Инструмент создания качественного стандарта. Заботится об удобстве рабочего места, добротной одежде и хорошей еде.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">На людях демонстративно гостеприимен, приветлив, громко шутит, чтобы показать себя общительным и веселым человеком.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Опоздания, неопределенные сроки и необходимость ждущего простаивания выбивают из колеи. Не терпит срыва графиков.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Потребность в душевной теплоте, глубокой верности и искреннем, стабильном отношении без подводных камней.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Радуется новым оригинальным идеям, если они помогают решить задачи еще эффективнее и раскрыть потенциал.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Останавливает пустые теоретические споры: «Хватит размышлять о теории, давайте смотреть на практику».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Фоном защищает свою территорию и подчиненных, обладая огромным запасом воли, но без лишнего нажима.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 14. ЭИИ (Достоевский) -->
+    <div class="tim-card" id="eii">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>ЭИИ — Этико-интуитивный интроверт <small>(Достоевский)</small></h2>
+                <span>Гуманист и психолог</span>
+            </div>
+            <div class="tim-motto">«В каждом человеке есть светлая душа, надо лишь понять»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Глубочайшее понимание морали, сочувствие, тонкий анализ человеческих взаимоотношений, эмпатия и прощение.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Видит скрытый потенциал развития личности. Умеет мягко направить человека к самосовершенствованию.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Старается быть понятным, логичным, разумно обоснованным в разговоре, приводить системные аргументы.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Агрессия, крики, принуждение и грубая сила вызывают физическое неприятие и глубокую травму.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Очень нуждается в помощи по практическим делам: как починить, как оформить документы, как организовать работу.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Расцветает от бытовой заботы, уютной атмосферы и предложенного чая с вкусным печеньем.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Тихо, но твердо останавливает грубые эмоциональные вспышки: «Не нужно повышать голос, это не поможет».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Фоном отлично чувствует чужое время, не заставляет себя ждать и умеет вовремя проявить терпение.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 15. ИЭЭ (Гексли) -->
+    <div class="tim-card" id="iee">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>ИЭЭ — Интуитивно-этический экстраверт <small>(Гексли)</small></h2>
+                <span>Советчик и скаут талантов</span>
+            </div>
+            <div class="tim-motto">«Вокруг столько интересного и классных людей!»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Видит уникальность каждого человека и шансы, которые упускают другие. Неиссякаемый фонтан идей и интереса к жизни.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Легко устанавливает контакт с кем угодно. Умеет расположить к себе за 3 секунды и выстроить нужные связи.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">При знакомстве может поиграть волевыми мышцами или показать твердость, но быстро возвращается к образу милого и контактного человека.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Скучные отчеты, сухие таблицы, кропотливая въедливая логика вызывают непреодолимое желание убежать на край света.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Обожает, когда о нем заботятся на физическом уровне: кормят, одевают по погоде и устраивают уютное гнездышко.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Включается в дело, когда ему дают четкую, эффективную инструкцию «как сделать быстро и получить результат».</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Жестко ограничивает тех, кто пытается его торопить: «Не торопи меня, я сам знаю свой темп!».</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Фоном постоянно подстраивает эмоции под собеседника, создавая легкую и непринужденную атмосферу.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 16. СЛИ (Габен) -->
+    <div class="tim-card" id="sli">
+        <div class="tim-header">
+            <div class="tim-title">
+                <h2>СЛИ — Сенсорно-логический интроверт <small>(Габен)</small></h2>
+                <span>Мастер и минималист</span>
+            </div>
+            <div class="tim-motto">«Минимум движений — максимум комфорта и пользы»</div>
+        </div>
+        <div class="blocks-grid">
+            <div class="block-box">
+                <div class="block-name block-ego">ЭГО (Сознание/Сила)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">1</span> Базовая: БС (Сенсорика ощущений)</div>
+                    <div class="func-desc">Гений телесного и физического удобства. Чувствует эргономику, материалы, сигналы тела и природу идеального отдыха.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">2</span> Творческая: ЧЛ (Деловая логика)</div>
+                    <div class="func-desc">Золотые руки. Умеет починить, сделать или наладить любой механизм с минимальными энергозатратами.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superego">СУПЕР-ЭГО (Социальный долг/Боль)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">3</span> Ролевая: БИ (Интуиция времени)</div>
+                    <div class="func-desc">Старается выглядеть пунктуальным человеком, планирует свои дела заранее, но внутренне не любит спешки.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">4</span> Болевая: ЧЭ (Этическая эмоция)</div>
+                    <div class="func-desc">Истерики, громкий эмоциональный шантаж и бурное проявление чувств вызывают желание немедленно уйти в затворничество.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-superid">СУПЕР-ИД (Внушаемость/Релакс)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">5</span> Суггестивная: ЧИ (Интуиция возможностей)</div>
+                    <div class="func-desc">Втягивается в общение с людьми, которые приносят оригинальные идеи, увлечения и открывают новые горизонты.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">6</span> Активационная: БЭ (Этика отношений)</div>
+                    <div class="func-desc">Раскрывается, когда чувствует тихое, теплое, доброжелательное и искреннее отношение без эмоционального давления.</div>
+                </div>
+            </div>
+            <div class="block-box">
+                <div class="block-name block-id">ИД (Автопилот/Защита)</div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">7</span> Ограничительная: ЧС (Силовая сенсорика)</div>
+                    <div class="func-desc">Спокойно и намертво игнорирует попытки силового давления: сдвинуть его с места против воли физически невозможно.</div>
+                </div>
+                <div class="func-item">
+                    <div class="func-header"><span class="func-num">8</span> Демонстративная: БЛ (Структурная логика)</div>
+                    <div class="func-desc">Фоном умеет четко и без лишних слов организовать рабочую схему так, чтобы все работало как часы.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
