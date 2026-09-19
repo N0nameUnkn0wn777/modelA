@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Модель А в лицах: 16 социотипов. Атомарное руководство по обработке реальности информационным аппаратом человеческой психики.">
+<title>МОДЕЛЬ А // 16 ТИМов — Neural Socionics Terminal</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpolygon points='16,3 29,10 29,22 16,29 3,22 3,10' fill='%23070b1c' stroke='%237c5cff' stroke-width='2'/%3E%3Ctext x='16' y='21' font-size='14' text-anchor='middle' fill='%237c5cff' font-family='monospace' font-weight='bold'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&family=Inter:wght@300;400;600;800&family=Jura:wght@500;700&display=swap" rel="stylesheet">
+<style>:root{
+  --bg0:#c0c0c0;--bg1:#c0c0c0;--ink:#000;--muted:#404040;--violet:#000080;--cyan:#000080;--rose:#000080;--amber:#000080;--green:#000080;--line:#000;--glass:#c0c0c0;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Tahoma","MS Sans Serif","Segoe UI",Geneva,Arial,sans-serif}
+html{scroll-behavior:smooth}
+body{background:#008080;color:#000;line-height:1.4;overflow-x:hidden;padding:54px 10px 10px}
+::selection{background:#000080;color:#fff}
+#bg,.grid-overlay,.scanlines,.hero-floor{display:none}
+.wrap{max-width:1240px;margin:0 auto;padding:0 12px}
+.mono{letter-spacing:normal}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;height:36px;padding:4px 8px;background:#c0c0c0;border:2px solid;border-top-color:#fff;border-left-color:#fff;border-right-color:#000;border-bottom-color:#000;box-shadow:inset 1px 1px 0 #dfdfdf,inset -1px -1px 0 #808080}
+.nav.scrolled{background:#c0c0c0;box-shadow:none}
+.nav-logo{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;font-size:13px;letter-spacing:normal;color:#000;text-decoration:none;display:flex;align-items:center;gap:6px}
+.nav-logo span{color:#000}
+.nav-links{display:flex;gap:2px}
+.nav-links a{color:#000;text-decoration:none;font-size:12px;letter-spacing:normal;padding:3px 10px;border:1px solid transparent}
+.nav-links a:hover{background:#000080;color:#fff}
+.nav-links a.active{background:#000080;color:#fff}
+
+/* HERO */
+.hero{position:relative;display:block;min-height:auto;padding:22px 0 18px;margin:10px 0 8px;background:#c0c0c0;border:2px solid;border-top-color:#fff;border-left-color:#fff;border-right-color:#000;border-bottom-color:#000;box-shadow:inset 1px 1px 0 #dfdfdf,inset -1px -1px 0 #808080;overflow:hidden}
+.kicker{font-size:11px;letter-spacing:normal;color:#000080;display:block;margin-bottom:10px}
+.kicker::before{display:none}
+.hero h1{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;font-size:clamp(20px,4vw,34px);line-height:1.15;letter-spacing:normal;margin-bottom:6px;color:#000}
+.hero h1 .grad{background:none;-webkit-background-clip:initial;background-clip:initial;color:#000;-webkit-text-fill-color:#000;font-weight:bold;animation:none}
+.hero h1 .dim{color:#000;font-weight:bold}
+.hero-sub{max-width:720px;color:#000;font-size:13px;margin-top:10px}
+.hero-sub b{color:#000080;font-weight:bold}
+.typeout-line{margin-top:12px;font-family:"Courier New",monospace;font-size:13px;letter-spacing:normal;color:#000080}
+.typeout-line .pre{color:#000080}
+.typeout-line .val{display:inline-block;min-width:56px;color:#000080;text-shadow:none}
+.cursor{display:inline-block;width:8px;height:1em;background:#000080;vertical-align:-.12em;animation:blink 1s step-end infinite;box-shadow:none}
+@keyframes blink{50%{opacity:0}}
+.hero-cta{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.btn{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;font-size:12px;letter-spacing:normal;padding:4px 18px 5px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;color:#000;background:#c0c0c0;border:2px solid;border-top-color:#fff;border-left-color:#fff;border-right-color:#000;border-bottom-color:#000;box-shadow:inset 1px 1px 0 #dfdfdf,inset -1px -1px 0 #808080;position:relative}
+.btn::after{display:none}
+.btn:hover{border-top-color:#fff;border-left-color:#fff;border-right-color:#000;border-bottom-color:#000}
+.btn:active{border-top-color:#000;border-left-color:#000;border-right-color:#fff;border-bottom-color:#fff;box-shadow:inset 1px 1px 0 #808080,inset -1px -1px 0 #dfdfdf}
+.btn.alt{background:#c0c0c0;color:#000}
+.hero-stats{display:flex;margin-top:20px;background:#fff;border:2px solid;border-top-color:#808080;border-left-color:#808080;border-right-color:#fff;border-bottom-color:#fff;max-width:640px;overflow:hidden}
+.hstat{flex:1;padding:8px 6px;text-align:center;border-right:1px solid #c0c0c0}
+.hstat:last-child{border-right:none}
+.hstat b{display:block;font-family:"Tahoma","MS Sans Serif",sans-serif;font-size:18px;font-weight:bold;color:#000;background:none;-webkit-text-fill-color:#000}
+.hstat i{font-style:normal;font-size:10px;letter-spacing:normal;color:#000080;font-family:"Tahoma","MS Sans Serif",sans-serif}
+
+/* SECTIONS */
+section{padding:0 0 24px;position:relative;z-index:1;margin:8px 0;background:#c0c0c0;border:2px solid;border-top-color:#fff;border-left-color:#fff;border-right-color:#000;border-bottom-color:#000;box-shadow:inset 1px 1px 0 #dfdfdf,inset -1px -1px 0 #808080}
+.sec-head{margin-bottom:20px}
+.sec-kicker{font-size:11px;letter-spacing:normal;color:#000080;display:block;margin-bottom:8px}
+.sec-kicker::before{display:none}
+.sec-head h2{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;font-size:13px;line-height:1.2;color:#fff;background:linear-gradient(90deg,#000080 0%,#1084d0 100%);padding:5px 10px;border:2px solid;border-top-color:#1084d0;border-left-color:#dfdfdf;border-right-color:#000;border-bottom-color:#000}
+.sec-head h2 span{color:#fff!important}
+.sec-head p{color:#000;max-width:760px;margin-top:10px;font-size:13px}
+.sec-code{display:none}
+
+/* THEORY */
+.theory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-bottom:20px}
+.tb{background:#fff;border:1px solid #000;padding:10px 12px;position:relative;margin:0}
+.tb:hover{border-color:#000}
+.tb .b-tag{font-size:10px;letter-spacing:normal;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;color:#808080}
+.tb .b-tag i{font-style:normal;color:#000080}
+.tb h3{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;letter-spacing:normal;font-size:12px;color:#000080;margin-bottom:6px}
+.tb p{font-size:12px;color:#000}
+.tb b{color:#000080}
+.model-panel{border:1px solid #000;overflow:hidden;background:#fff;display:grid;grid-template-columns:1.25fr .9fr}
+.model-diagram{padding:16px}
+.model-diagram .md-title{font-size:10px;letter-spacing:normal;color:#000080;font-weight:bold;margin-bottom:14px}
+.m-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;position:relative}
+.m-row::before{content:attr(data-lbl);position:absolute;left:0;right:0;top:-11px;font-size:9px;letter-spacing:normal;color:#000080;font-weight:bold;text-align:center;background:#fff}
+.m-row.first{margin-top:16px}
+.m-cell{border:1px solid #000;background:#fff;padding:6px 10px;display:flex;align-items:baseline;gap:8px}
+.m-cell:hover{border-color:#000}
+.m-cell .n{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;font-size:16px;color:#000080}
+.m-cell .t{font-size:12px;color:#000}
+.m-cell .t small{display:block;color:#808080;font-size:10px;letter-spacing:normal}
+.model-legend{padding:16px;border-left:1px solid #000;background:#fff}
+.model-legend h4{font-size:10px;letter-spacing:normal;color:#000080;font-weight:bold;margin-bottom:10px}
+.lg{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #c0c0c0}
+.lg:last-child{border-bottom:none}
+.lg .chip{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;font-size:13px;min-width:40px;color:#000080;text-align:left}
+.lg .lg-t b{display:block;font-size:12px;color:#000}
+.lg .lg-t span{font-size:11px;color:#404040}
+
+/* FILTERS */
+.filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px;padding:8px;background:#c0c0c0;border:2px solid;border-top-color:#dfdfdf;border-left-color:#dfdfdf;border-right-color:#808080;border-bottom-color:#808080;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #404040;position:sticky;top:40px;z-index:5}
+.search{flex:1;min-width:200px;display:flex;align-items:center;gap:6px;background:#fff;border:2px solid;border-top-color:#808080;border-left-color:#808080;border-right-color:#fff;border-bottom-color:#fff;padding:4px 8px}
+.search svg{flex:none;opacity:.6;color:#000080}
+.search input{flex:1;background:none;border:none;outline:none;color:#000;font-family:"Tahoma","MS Sans Serif",sans-serif;font-size:12px}
+.search input::placeholder{color:#808080}
+.qchips{display:flex;gap:4px;flex-wrap:wrap}
+.qchip{font-family:"Tahoma","MS Sans Serif",sans-serif;font-size:11px;letter-spacing:normal;color:#000;padding:4px 12px;background:#c0c0c0;cursor:pointer;border:2px solid;border-top-color:#fff;border-left-color:#fff;border-right-color:#000;border-bottom-color:#000;box-shadow:inset 1px 1px 0 #dfdfdf,inset -1px -1px 0 #808080}
+.qchip:hover{color:#000}
+.qchip:active,.qchip.active{color:#fff;background:#000080;border-top-color:#000;border-left-color:#000;border-right-color:#fff;border-bottom-color:#fff;box-shadow:inset 1px 1px 0 #808080,inset -1px -1px 0 #dfdfdf}
+.qcount{margin-left:auto;font-size:11px;letter-spacing:normal;color:#000;white-space:nowrap;font-family:"Tahoma","MS Sans Serif",sans-serif}
+.qcount b{color:#000080;font-weight:bold}
+
+/* QUADRA */
+.quadra{margin-top:10px}
+.quadra-head{display:flex;align-items:center;gap:14px;margin:10px 0 12px;padding-bottom:8px;border-bottom:2px solid #808080}
+.q-roman{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;font-size:20px;line-height:1;color:#000080;-webkit-text-stroke:0;text-shadow:none;opacity:1}
+.quadra-head h2{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;font-size:14px;color:#000080}
+.quadra-head h2::after{display:none;content:none}
+.q-tag{color:#404040;font-size:11px;letter-spacing:normal;margin-top:0;font-family:"Tahoma","MS Sans Serif",sans-serif;text-transform:none}
+.cards-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+
+/* TIM CARD */
+.tim-card{grid-column:span 6;position:relative;background:#c0c0c0;border:2px solid;border-top-color:#fff;border-left-color:#fff;border-right-color:#000;border-bottom-color:#000;box-shadow:inset 1px 1px 0 #dfdfdf,inset -1px -1px 0 #808080;padding:0;overflow:hidden}
+.tim-card:nth-child(2n){grid-column:span 6}
+.tim-card.hidden{display:none}
+.tim-card:hover{border-top-color:#fff;border-left-color:#fff;border-right-color:#000;border-bottom-color:#000;box-shadow:inset 1px 1px 0 #dfdfdf,inset -1px -1px 0 #808080}
+.corner{display:none}
+.tc-head{display:flex;justify-content:space-between;align-items:center;gap:8px;background:linear-gradient(90deg,#000080 0%,#1084d0 100%);padding:5px 10px;border-bottom:1px solid #000}
+.tc-code{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;font-size:14px;letter-spacing:normal;color:#fff;text-shadow:none}
+.tc-quad{font-size:10px;letter-spacing:normal;color:#fff!important;border:1px solid #fff!important;border-radius:0;padding:1px 6px;background:rgba(255,255,255,.15)}
+.tc-nick{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;font-size:14px;margin:10px 12px 0;letter-spacing:normal;color:#000}
+.tc-full{color:#000;font-size:12px;margin-top:1px;padding:0 12px}
+.tc-role{color:#000080;font-family:"Tahoma","MS Sans Serif",sans-serif;letter-spacing:normal;font-size:11px;margin-top:4px;padding:0 12px;text-transform:none;opacity:1}
+.tc-role::before{content:""}
+.tc-motto{margin:8px 12px;padding:6px 10px;border:1px solid #000;background:#fff;border-radius:0;font-style:normal;font-size:12px;color:#000;box-shadow:none}
+.func-map{display:flex;gap:3px;margin-bottom:8px;padding:0 12px;flex-wrap:wrap}
+.fmap{width:22px;height:22px;background:#c0c0c0;color:#000;font-family:"Tahoma","MS Sans Serif",sans-serif;font-size:10px;cursor:pointer;border:2px solid;border-top-color:#fff;border-left-color:#fff;border-right-color:#000;border-bottom-color:#000;box-shadow:inset 1px 1px 0 #dfdfdf,inset -1px -1px 0 #808080}
+.fmap:hover{background:#c0c0c0;color:#000}
+.fmap:active,.fmap.on{background:#000080;color:#fff;border-top-color:#000;border-left-color:#000;border-right-color:#fff;border-bottom-color:#fff;box-shadow:inset 1px 1px 0 #808080,inset -1px -1px 0 #dfdfdf}
+
+details.tb-d{border:1px solid #000;margin:0 12px 8px;background:#c0c0c0;overflow:hidden}
+details.tb-d:last-child{margin-bottom:12px}
+details.tb-d[open]{border-color:#000}
+details.tb-d summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;padding:4px 8px;background:linear-gradient(90deg,#000080 0%,#1084d0 100%);user-select:none}
+details.tb-d summary::-webkit-details-marker{display:none}
+details.tb-d summary:hover{background:linear-gradient(90deg,#000080 0%,#1084d0 100%)}
+.sum-ico{color:#fff;font-size:10px;flex:none;width:12px;text-align:center}
+details.tb-d[open] .sum-ico{transform:none}
+.b-slot{font-size:10px;color:#fff;letter-spacing:normal;border:1px solid #fff;border-radius:0;padding:1px 5px;flex:none}
+.b-name{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;letter-spacing:normal;font-size:11px;color:#fff}
+.b-sub{font-size:11px;color:#bfd6f0;margin-left:auto;letter-spacing:normal}
+.b-body{padding:6px 10px 8px;background:#fff}
+.func{padding:6px 0;border-top:1px solid #c0c0c0}
+.func:first-child{border-top:none}
+.func-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.f-num{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;color:#000080;width:18px;text-align:center;font-size:12px}
+.f-pos{font-size:10px;letter-spacing:normal;color:#404040;text-transform:none;border:none;background:none;border-radius:0;padding:0}
+.f-name{font-weight:bold;font-size:12px;color:#000}
+.func p{font-size:12px;color:#000;margin-top:3px;padding-left:26px}
+
+/* FOOTER */
+footer{margin:8px 0 0;padding:12px 0;position:relative;z-index:1;background:#c0c0c0;border:2px solid;border-top-color:#fff;border-left-color:#fff;border-right-color:#000;border-bottom-color:#000;box-shadow:inset 1px 1px 0 #dfdfdf,inset -1px -1px 0 #808080}
+.foot-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.foot-sig{font-family:"Tahoma","MS Sans Serif",sans-serif;font-weight:bold;font-size:13px;color:#000}
+.foot-sig span{color:#000080}
+.foot-txt{color:#000;font-size:11px;max-width:480px}
+.foot-txt b{color:#000080}
+.to-top{position:fixed;right:16px;bottom:16px;z-index:55;width:30px;height:30px;background:#c0c0c0;color:#000;cursor:pointer;font-size:11px;font-weight:bold;border:2px solid;border-top-color:#fff;border-left-color:#fff;border-right-color:#000;border-bottom-color:#000;box-shadow:inset 1px 1px 0 #dfdfdf,inset -1px -1px 0 #808080;opacity:0;pointer-events:none}
+.to-top.show{opacity:1;pointer-events:auto}
+.to-top:active{border-top-color:#000;border-left-color:#000;border-right-color:#fff;border-bottom-color:#fff}
+
+/* REVEAL */
+.reveal{opacity:1;transform:none;transition:none}
+.reveal.visible{opacity:1;transform:none}
+
+@media (max-width:980px){
+  .model-panel{grid-template-columns:1fr}
+  .model-legend{border-left:none;border-top:1px solid #000}
+}
+@media (max-width:860px){
+  .tim-card,.tim-card:nth-child(2n){grid-column:span 12}
+  .nav-links{display:none}
+  .cards-grid{grid-template-columns:1fr}
+  .filters{position:static}
+}
+@media (max-width:520px){
+  .hero-stats{flex-direction:column}
+  .hstat{border-right:none;border-bottom:1px solid #c0c0c0}
+  .hstat:last-child{border-bottom:none}
+}</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<div class="grid-overlay"></div>
+<div class="scanlines"></div>
+
+<header class="nav" id="nav">
+  <a class="nav-logo" href="#top">MODEL<span>/</span>A<span class="mono" style="margin-left:8px">::TIM_16</span></a>
+  <nav class="nav-links">
+    <a href="#theory">ТЕОРИЯ</a>
+    <a href="#types">16 ТИМОВ</a>
+    <a href="#quadra-alpha">КВАДРЫ</a>
+    <a href="#foot">КОНТАКТ</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-floor"></div>
+    <div class="wrap">
+      <div class="kicker">neuro-socionics · augstinavichute protocol</div>
+      <h1>МОДЕЛЬ <span class="grad">А</span><br><span class="dim">в лицах.</span></h1>
+      <p class="hero-sub">Применение <b>Модели А</b> для <b>16 социотипов</b> — атомарное руководство по обработке реальности информационным аппаратом человеческой психики. Каждый ТИМ вскрыт до <b>8 функций</b>, сгруппированных в <b>4 блока</b>.</p>
+      <div class="typeout-line"><span class="pre">&gt; СКАНИРУЮ_ТИМ:</span> <span class="val" id="typeout"></span><span class="cursor"></span></div>
+      <div class="hero-cta">
+        <a class="btn" href="#theory">⎔ ОТКРЫТЬ ТЕХПАСПОРТ</a>
+        <a class="btn alt" href="#types">◈ КАТАЛОГ 16 ТИМОВ</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><b>16</b><i>ТИМОВ</i></div>
+        <div class="hstat"><b>4</b><i>КВАДРЫ</i></div>
+        <div class="hstat"><b>8</b><i>ФУНКЦИЙ</i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THEORY -->
+  <section id="theory">
+    <div class="wrap">
+      <div class="sec-code mono">01</div>
+      <div class="sec-head reveal">
+        <div class="sec-kicker">архитектура // модель а</div>
+        <h2>Схема психики: <span style="color:var(--violet)">4 блока × 8 функций</span></h2>
+        <p>Информационный аппарат каждого ТИМа состоит из восьми аспектов Стандартной Модели «А». Они сгруппированы в четыре горизонтальных блока — от «заводских настроек мастерства» до «фонового спецназа».</p>
+      </div>
+
+      <div class="theory-grid">
+        <div class="tb reveal" style="--c:var(--rose)">
+          <div class="b-tag"><i>01</i><i>СИЛЬНАЯ ЗОНА</i></div>
+          <h3>ЭГО · 1–2</h3>
+          <p><b>Заводские настройки</b> мастерства и творческий инструмент меняния мира. Здесь человек уверен, продуктивен и не нуждается в подтверждении своих способностей.</p>
+        </div>
+        <div class="tb reveal" style="--c:var(--amber)">
+          <div class="b-tag"><i>02</i><i>ЗОНА НАПРЯЖЕНИЯ</i></div>
+          <h3>СУПЕР-ЭГО · 3–4</h3>
+          <p><b>Социальная маска</b> и «пятка Ахиллеса» — источник стыда и паники. Здесь человек играет роль, боится критики и остро нуждается в поддержке партнёра.</p>
+        </div>
+        <div class="tb reveal" style="--c:var(--cyan)">
+          <div class="b-tag"><i>03</i><i>ЗОНА ВНУШАЕМОСТИ</i></div>
+          <h3>СУПЕР-ИД · 5–6</h3>
+          <p><b>Кнопки детской радости</b>, где мы наивны, внушаемы и жаждем заботы. Ожидаем, что двойник мягко закроет эти потребности.</p>
+        </div>
+        <div class="tb reveal" style="--c:var(--green)">
+          <div class="b-tag"><i>04</i><i>ЗОНА АВТОПИЛОТА</i></div>
+          <h3>ИД · 7–8</h3>
+          <p><b>Невидимый фоновый спецназ:</b> работает автоматически, без лишних слов. Мощные, но неосознаваемые навыки, включающиеся по надобности.</p>
+        </div>
+      </div>
+
+      <div class="model-panel reveal">
+        <div class="model-diagram">
+          <div class="md-title">// ОСЕВОЙ РАЗРЕЗ МОДЕЛИ А</div>
+          <div class="m-row first" style="--c:var(--rose)" data-lbl="БЛОК ЭГО · МАСТЕРСТВО">
+            <div class="m-cell"><span class="n">1</span><span class="t">Базовая<small>программная · первая функция</small></span></div>
+            <div class="m-cell"><span class="n">2</span><span class="t">Творческая<small>инструмент реализации</small></span></div>
+          </div>
+          <div class="m-row" style="--c:var(--amber)" data-lbl="БЛОК СУПЕР-ЭГО · СОЦИАЛЬНАЯ МАСКА">
+            <div class="m-cell"><span class="n">3</span><span class="t">Ролевая<small>защитный шаблон</small></span></div>
+            <div class="m-cell"><span class="n">4</span><span class="t">Болевая<small>точка уязвимости</small></span></div>
+          </div>
+          <div class="m-row" style="--c:var(--cyan)" data-lbl="БЛОК СУПЕР-ИД · РЕЛАКС">
+            <div class="m-cell"><span class="n">5</span><span class="t">Суггестивная<small>кнопка внушения</small></span></div>
+            <div class="m-cell"><span class="n">6</span><span class="t">Активационная<small>пробуждается заботой</small></span></div>
+          </div>
+          <div class="m-row" style="--c:var(--green)" data-lbl="БЛОК ИД · АВТОПИЛОТ">
+            <div class="m-cell"><span class="n">7</span><span class="t">Ограничительная<small>жёсткий фильтр</small></span></div>
+            <div class="m-cell"><span class="n">8</span><span class="t">Демонстративная<small>фабрика навыков</small></span></div>
+          </div>
+        </div>
+        <div class="model-legend">
+          <h4>// МЕРНОСТИ ФУНКЦИЙ</h4>
+          <div class="lg" style="--c:var(--violet)"><span class="chip">1|8</span><div class="lg-t"><b>Сильные</b><span>Осознанный (1) и неосознанный (8) стержень типа</span></div></div>
+          <div class="lg" style="--c:var(--cyan)"><span class="chip">2|7</span><div class="lg-t"><b>Нормативные</b><span>Гибкий инструмент (2) и молчаливый стандарт (7)</span></div></div>
+          <div class="lg" style="--c:var(--amber)"><span class="chip">3|6</span><div class="lg-t"><b>Слабые</b><span>Социальная роль (3) и зона направленной наградности (6)</span></div></div>
+          <div class="lg" style="--c:var(--rose)"><span class="chip">4|5</span><div class="lg-t"><b>Слабейшие</b><span>Болевая точка (4) и суггестивная «кнопка» (5)</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPES -->
+  <section id="types">
+    <div class="wrap">
+      <div class="sec-code mono">02</div>
+      <div class="sec-head reveal">
+        <div class="sec-kicker">база данных // каталог личностей</div>
+        <h2>Библиотека <span style="color:var(--cyan)">16 ТИМов</span></h2>
+        <p>Разверни каждый блок — от ЭГО до ИД — и загляни в анатомию обработки реальности. Нажми на номер функции в карте, чтобы прыгнуть к её описанию.</p>
+      </div>
+
+      <div class="filters reveal">
+        <label class="search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+          <input id="search" type="text" placeholder="Поиск ТИМа: Дон Кихот, ИЛЭ, логик…">
+        </label>
+        <div class="qchips" id="qchips">
+          <button class="qchip active" data-q="all">ВСЕ</button>
+          <button class="qchip" data-q="alpha">АЛЬФА</button>
+          <button class="qchip" data-q="beta">БЕТА</button>
+          <button class="qchip" data-q="gamma">ГАММА</button>
+          <button class="qchip" data-q="delta">ДЕЛЬТА</button>
+        </div>
+        <div class="qcount">НАЙДЕНО: <b id="qcount">16</b> / 16</div>
+      </div>
+
+      <div id="quadra-root"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="foot">
+  <div class="wrap foot-inner">
+    <div class="foot-sig">MODEL<span>/</span>A <span style="font-size:.65em;color:var(--muted)">v.2.0</span></div>
+    <p class="foot-txt">Лендинг разработан на основе справочника <b>«Модель А в лицах: 16 Социотипов»</b>. Теоретическая база — концепция Аушры Аугустинавичюте и классическая соционика.</p>
+  </div>
+</footer>
+
+<button class="to-top" id="totop" title="Наверх">▲</button>
+<noscript><p style="padding:40px;text-align:center;color:#fff">Включите JavaScript для отображения интерактивного справочника.</p></noscript>
+
+<script>
+var POS={1:"Базовая",2:"Творческая",3:"Ролевая",4:"Болевая",5:"Суггестивная",6:"Активационная",7:"Ограничительная",8:"Демонстративная"};
+var BLOCKS=[
+ {name:"ЭГО",sub:"Сознание · Сила",slot:"01–02",cl:"#fb7185"},
+ {name:"СУПЕР-ЭГО",sub:"Социальная маска · Боль",slot:"03–04",cl:"#fbbf24"},
+ {name:"СУПЕР-ИД",sub:"Внушаемость · Релакс",slot:"05–06",cl:"#22d3ee"},
+ {name:"ИД",sub:"Автопилот · Защита",slot:"07–08",cl:"#34d399"}
+];
+var QUADRAS={
+ host:"#22d3ee",
+ alpha:{name:"Квадра Альфа",num:"I",tag:"Искатели и романтики",cl:"#22d3ee"},
+ beta:{name:"Квадра Бета",num:"II",tag:"Воители и стратеги",cl:"#fb7185"},
+ gamma:{name:"Квадра Гамма",num:"III",tag:"Прагматики и реформаторы",cl:"#fbbf24"},
+ delta:{name:"Квадра Дельта",num:"IV",tag:"Гуманисты и созидатели",cl:"#34d399"}
+};
+
+var TIMS=[
+{id:"ile",q:"alpha",code:"ИЛЭ",nick:"Дон Кихот",full:"Интуитивно-логический экстраверт",role:"Искатель компонентов мироздания",motto:"«А что, если построить телепорт из супа и изоленты?»",f:[
+ {n:1,c:"ЧИ",t:"Интуиция возможностей",d:"Видит 500 вариантов развития событий там, где нормальный человек видит просто стену. Генерирует гениальные идеи со скоростью пулемета."},
+ {n:2,c:"БЛ",t:"Структурная логика",d:"Быстро упаковывает безумную идею в строгую схему. Если реальность не влезает в схему — тем хуже для реальности."},
+ {n:3,c:"ЧС",t:"Силовая сенсорика",d:"При знакомстве пыжится, старается выглядеть суровым и волевым доминатором. Быстро устает и снова становится мягким хаотичным ученым."},
+ {n:4,c:"БЭ",t:"Этика отношений",d:"Ужас при вопросе «Как ты ко мне относишься?». Намеков не понимает, чужие обиды вызывают зависание системы."},
+ {n:5,c:"БС",t:"Сенсорика ощущений",d:"Забывает поесть, пока не падает в обморок. Готов душу отдать за того, кто молча завернет его в плед и даст горячий суп."},
+ {n:6,c:"ЧЭ",t:"Этика эмоций",d:"Расцветает от искреннего веселья и движухи вокруг. Загорается энергией, если его идеи встретили бурными аплодисментами."},
+ {n:7,c:"БИ",t:"Интуиция времени",d:"Резко пресекает чужое занудство о сроках: «Не капай на мозги, успеем!», хотя сам может опоздать на три часа."},
+ {n:8,c:"ЧЛ",t:"Деловая логика",d:"Фоном умеет починить всё на свете из подручных средств, но считает эту работу слишком скучной, чтобы ею хвастаться."}]},
+{id:"sei",q:"alpha",code:"СЭИ",nick:"Дюма",full:"Сенсорно-этический интроверт",role:"Посредник и гедонист",motto:"«Мир подождет, пока мы пьем этот идеальный какао»",f:[
+ {n:1,c:"БС",t:"Сенсорика ощущений",d:"Гений комфорта. Чувствует малейший сквозняк, неудобный стул или оттенки вкуса в блюде. Создает уют везде, где садится."},
+ {n:2,c:"ЧЭ",t:"Этика эмоций",d:"Мастерски управляет атмосферой. Растопит любой конфликт шуткой, мягкой улыбкой или вовремя поднесенной пироженкой."},
+ {n:3,c:"БИ",t:"Интуиция времени",d:"На людях пытается выглядеть пунктуальным и дальновидным стратегическим планировщиком. На деле живет моментом."},
+ {n:4,c:"ЧЛ",t:"Деловая логика",d:"Графики эффективности и сухое требование «оптимизировать процессы» вызывают зубную боль. Не любитель считать дебет с кредитом."},
+ {n:5,c:"ЧИ",t:"Интуиция возможностей",d:"Обожает людей с безумными фантазиями. Смотрит на них как на марсиан и с открытым ртом слушает их концепции."},
+ {n:6,c:"БЛ",t:"Структурная логика",d:"Успокаивается и приходит в восторг, когда ему раскладывают хаос по понятным полочкам и логическим категориям."},
+ {n:7,c:"ЧС",t:"Силовая сенсорика",d:"Если кто-то наглеет, тихо, но намертво перекрывает доступ к ресурсам и телу. Надавить на него физически практически невозможно."},
+ {n:8,c:"БЭ",t:"Этика отношений",d:"Со всеми поддерживает ровные, приятные отношения на автопилоте, даже не задумываясь о том, как у него это получается."}]},
+{id:"ese",q:"alpha",code:"ЭСЭ",nick:"Гюго",full:"Этико-сенсорный экстраверт",role:"Энтузиаст и генератор праздника",motto:"«Почему никто не радуется?! Сейчас я вас устрою праздник!»",f:[
+ {n:1,c:"ЧЭ",t:"Этика эмоций",d:"Мощный эмоциональный реактор. Способен заразить своим настроением целый стадион. Не умеет и не хочет скрывать чувства."},
+ {n:2,c:"БС",t:"Сенсорика ощущений",d:"Заботится на убой: накормит, обогреет, наденет шапку. В его доме физически невозможно остаться голодным или немытым."},
+ {n:3,c:"ЧЛ",t:"Деловая логика",d:"Очень старается выглядеть деловым, хлопотливым и сугубо практичным человеком, заваливая себя кучей мелких задач."},
+ {n:4,c:"БИ",t:"Интуиция времени",d:"Ненавидит неопределенность и ожидания. Фраза «посмотрим по ситуации» вгоняет в панику. Стрессует от опозданий."},
+ {n:5,c:"БЛ",t:"Структурная логика",d:"Замирает от уважения перед сухими, умными схемами и спокойными интеллектуалами, поясняющими устройство мира."},
+ {n:6,c:"ЧИ",t:"Интуиция возможностей",d:"Расцветает от новых перспектив, неожиданных идей и альтернативных взглядов на привычные вещи."},
+ {n:7,c:"БЭ",t:"Этика отношений",d:"Резко обрезает фальшивые или токсичные связи: «Если ты врешь, ты мне больше не друг, пока!»."},
+ {n:8,c:"ЧС",t:"Силовая сенсорика",d:"Фоном легко защищает свое пространство и близких, прошибая любые бюрократические стены без лишнего шума."}]},
+{id:"lii",q:"alpha",code:"ЛИИ",nick:"Робеспьер",full:"Логико-интуитивный интроверт",role:"Аналитик и архитектор систем",motto:"«Все должно быть справедливо и классифицировано»",f:[
+ {n:1,c:"БЛ",t:"Структурная логика",d:"Идеальный кристалл мышления. Все явления раскладываются на теории, аксиомы и строгие логические законы."},
+ {n:2,c:"ЧИ",t:"Интуиция возможностей",d:"Ищет альтернативные гипотезы для совершенствования своей системы. Видит скрытую суть вещей и глубокие взаимосвязи."},
+ {n:3,c:"БЭ",t:"Этика отношений",d:"Привередливо вежлив и корректен в обществе. Старается соблюдать все этикетные нормы, чтобы никого не задеть случайно."},
+ {n:4,c:"ЧС",t:"Силовая сенсорика",d:"Прямое физическое или эмоциональное давление вызывает стопор или взрыв. Не переносит волюнтаризма и хамства."},
+ {n:5,c:"ЧЭ",t:"Этика эмоций",d:"Нуждается в ярких, теплоэмоциональных людях. Сам суховат, но расцветает, когда его «отогревают» искренним смехом."},
+ {n:6,c:"БС",t:"Сенсорика ощущений",d:"С благодарностью принимает заботу о своем быте и здоровье, так как сам часто забывает о требованиях тела."},
+ {n:7,c:"ЧЛ",t:"Деловая логика",d:"Отсекает неэффективные суетливые действия: «Зачем делать бессмысленную работу, если процесс не оптимизирован?»."},
+ {n:8,c:"БИ",t:"Интуиция времени",d:"Фоном отлично чувствует время, никогда не опаздывает без причины и знает, когда процесс созрел."}]},
+{id:"eie",q:"beta",code:"ЭИЭ",nick:"Гамлет",full:"Этико-интуитивный экстраверт",role:"Наставник и трагический актер",motto:"«Быть или не быть? Вот в чем драматический вопрос!»",f:[
+ {n:1,c:"ЧЭ",t:"Этика эмоций",d:"Мастер высокооктанового эмоционального воздействия. Видит мир как грандиозную театральную сцену, полную страстей."},
+ {n:2,c:"БИ",t:"Интуиция времени",d:"Чувствует исторические моменты и неизбежность катастроф. Прекрасно манипулирует темпом, создавая нужный драматический момент."},
+ {n:3,c:"ЧЛ",t:"Деловая логика",d:"Пытается выглядеть собранным профессионалом, засыпает терминами, но быстро устает от рутинной работы."},
+ {n:4,c:"БС",t:"Сенсорика ощущений",d:"Физиологические подробности, болезни или неуклюжие бытовые заботы вызывают брезгливость и глубокий дискомфорт."},
+ {n:5,c:"БЛ",t:"Структурная логика",d:"Успокаивается только тогда, когда ему четко и хладнокровно объясняют правила игры и железные логические рамки."},
+ {n:6,c:"ЧС",t:"Силовая сенсорика",d:"Восхищается силой, авторитетом и решительностью. Включается в работу, когда видит сильного лидера."},
+ {n:7,c:"БЭ",t:"Этика отношений",d:"Мгновенно пресекает чужое «неправильное» отношение или попытку манипулировать моралью: «Не смей со мной так разговаривать!»."},
+ {n:8,c:"ЧИ",t:"Интуиция возможностей",d:"Фоном прекрасно генерирует альтернативные катастрофические сценарии, чтобы обезопасить себя и команду."}]},
+{id:"sle",q:"beta",code:"СЛЭ",nick:"Жуков",full:"Сенсорно-логический экстраверт",role:"Маршал и завоеватель",motto:"«Вижу цель, не вижу препятствий. Препятствия — снести»",f:[
+ {n:1,c:"ЧС",t:"Силовая сенсорика",d:"Сканер территории и расстановки сил. Моментально видит слабые места, захватывает контроль и продавливает решения."},
+ {n:2,c:"БЛ",t:"Структурная логика",d:"Строит железную тактическую схему для победы. Использование законов и иерархий как оружия для подчинения реальности."},
+ {n:3,c:"ЧИ",t:"Интуиция возможностей",d:"Показывает себя широких взглядов человеком, оригиналом и генератором идей, хотя на деле предпочитает понятную классику."},
+ {n:4,c:"БЭ",t:"Этика отношений",d:"Абсолютно не понимает тонких движений души: «Ты меня любишь или уважительно относишься? Скажи прямо!». Боится быть обманутым."},
+ {n:5,c:"БИ",t:"Интуиция времени",d:"Беспомощен перед вопросами будущего. Искренне благодарен тому, кто спрогнозирует идеальный момент для удара."},
+ {n:6,c:"ЧЭ",t:"Этика эмоций",d:"Заряжается от эмоционального подъема вокруг. Ему нужен тот, кто разбавит его суровую жизнь искренней радостью."},
+ {n:7,c:"БС",t:"Сенсорика ощущений",d:"Без лишних слов пресекает физический дискомфорт, боли или жалобы со стороны: «Сопли подбери, некогда болеть»."},
+ {n:8,c:"ЧЛ",t:"Деловая логика",d:"Молча и эффективно организует любой материальный процесс или стройку без долгих теоретических разговоров."}]},
+{id:"iei",q:"beta",code:"ИЭИ",nick:"Есенин",full:"Интуитивно-этический интроверт",role:"Лирик и вдохновитель",motto:"«Все будет хорошо, я узнавал у Вселенной»",f:[
+ {n:1,c:"БИ",t:"Интуиция времени",d:"Мастер плыть по течению времени. Знает, когда нужно подождать, а когда всё случится само собой. Поэт и мечтатель."},
+ {n:2,c:"ЧЭ",t:"Этика эмоций",d:"Тончайшая манипуляция настроением. Умеет вызвать нужную эмоцию — от светлой грусти до романтического восторга."},
+ {n:3,c:"БС",t:"Сенсорика ощущений",d:"Притворяется знатоком стиля и уюта, старается выглядеть ухоженным и грациозным, но быстро утомляется бытовой рутиной."},
+ {n:4,c:"ЧЛ",t:"Деловая логика",d:"Требование «работать по инструкции» и быть экономически эффективным вызывают экзистенциальный ужас."},
+ {n:5,c:"ЧС",t:"Силовая сенсорика",d:"Подсознательно ищет сильного, уверенного партнера, который придет, победит всех драконов и решит все проблемы."},
+ {n:6,c:"БЛ",t:"Структурная логика",d:"Расцветает, когда ему системно и ясно объясняют логику происходящего без криков и эмоционального хаоса."},
+ {n:7,c:"ЧИ",t:"Интуиция возможностей",d:"Мягко отсекает лишние или суетливые альтернативы: «Не надо изобретать велосипед, мы пойдём другим путём»."},
+ {n:8,c:"БЭ",t:"Этика отношений",d:"Фоном располагает к себе людей, избегая прямых конфликтов и незаметно сглаживая острые углы."}]},
+{id:"lsi",q:"beta",code:"ЛСИ",nick:"Максим Горький",full:"Логико-сенсорный интроверт",role:"Хранитель порядка и инспектор",motto:"«Порядок освобождает мысль. Все по инструкции»",f:[
+ {n:1,c:"БЛ",t:"Структурная логика",d:"Создатель безупречных систем, уставов и регламентов. В его мире у каждого винтика есть свое законодательно закрепленное место."},
+ {n:2,c:"ЧС",t:"Силовая сенсорика",d:"Инструмент внедрения порядка. Умеет методично, без лишнего шума дожать выполнение правил до полного идеала."},
+ {n:3,c:"БЭ",t:"Этика отношений",d:"В незнакомой компании подчеркнуто вежлив, держит дистанцию, старается соблюдать нормы приличия до грамма."},
+ {n:4,c:"ЧИ",t:"Интуиция возможностей",d:"Непредсказуемость и хаос вызывают сильный стресс. Внезапная смена планов воспринимается как личное предательство."},
+ {n:5,c:"ЧЭ",t:"Этика эмоций",d:"Нуждается в ярких, эмоциональных людях, способных разморозить его суровый рациональный внутренний мир."},
+ {n:6,c:"БИ",t:"Интуиция времени",d:"Расслабляется, когда ему даются четкие временные прогнозы: «Все идет по плану, результат будет ровно в 18:00»."},
+ {n:7,c:"ЧЛ",t:"Деловая логика",d:"Пресекает халтуру и бессмысленную суету на корню: «Работаем строго по регламенту, никаких самоделок»."},
+ {n:8,c:"БС",t:"Сенсорика ощущений",d:"Фоном поддерживает идеальную чистоту и порядок в своих вещах, даже не замечая, как он это делает."}]},
+{id:"see",q:"gamma",code:"СЭЭ",nick:"Наполеон",full:"Сенсорно-этический экстраверт",role:"Политик и лидер влияния",motto:"«Пришел, увидел, очаровал и возглавил»",f:[
+ {n:1,c:"ЧС",t:"Силовая сенсорика",d:"Естественное расширение зоны влияния. Управляет людскими ресурсами, статусом и авторитетом с легкостью дышащего человека."},
+ {n:2,c:"БЭ",t:"Этика отношений",d:"Гибкая манипуляция отношениями. Умеет обволакивать, заводить нужные связи и моментально расставлять нужные дистанции."},
+ {n:3,c:"ЧИ",t:"Интуиция возможностей",d:"Любит казаться оригиналом, провидцем и инноватором, демонстрируя свои многочисленные «уникальные» таланты."},
+ {n:4,c:"БЛ",t:"Структурная логика",d:"Не переносит скучные инструкции, формулы и когда его заставляют логически обосновывать свои спонтанные решения."},
+ {n:5,c:"БИ",t:"Интуиция времени",d:"Тянется к стратегически мыслящим людям, способным уберечь его от опрометчивых поступков и предсказать финал."},
+ {n:6,c:"ЧЛ",t:"Деловая логика",d:"Загорается, когда видит реальную выгоду и эффективные практические способы заработать или сделать дело."},
+ {n:7,c:"БС",t:"Сенсорика ощущений",d:"Игнорирует мелкий физический дискомфорт и жестко отсекает попытки других «опекать» его в быту."},
+ {n:8,c:"ЧЭ",t:"Этика эмоций",d:"Фоном закатывает яркие сцены или дарит бурные эмоции, если это помогает моментально решить практическую задачу."}]},
+{id:"ili",q:"gamma",code:"ИЛИ",nick:"Бальзак",full:"Интуитивно-логический интроверт",role:"Критик и мудрец",motto:"«Все это уже было, и все это плохо закончится»",f:[
+ {n:1,c:"БИ",t:"Интуиция времени",d:"Глубокое видение трендов, исторического потока и неизбежных ошибок. Мастер скептического и точного прогноза."},
+ {n:2,c:"ЧЛ",t:"Деловая логика",d:"Знает, как затратить минимум усилий и получить максимум результата. Мастер экономии ресурсов и оценки рисков."},
+ {n:3,c:"БС",t:"Сенсорика ощущений",d:"Старается выглядеть сибаритом, знатоком хорошей кухни и удобства, но делает это скорее «по правилам»."},
+ {n:4,c:"ЧЭ",t:"Этика эмоций",d:"Терпеть не может истерик, восторженного визга и требовании «покажи радость!». Эмоциональный прессинг вызывает отторжение."},
+ {n:5,c:"ЧС",t:"Силовая сенсорика",d:"Подсознательно ждет волевого толчка извне. С уважением подчиняется решительной силе, которая знает, куда идти."},
+ {n:6,c:"БЭ",t:"Этика отношений",d:"Тает, когда к нему проявляют искреннее, доброе, теплое отношение без фальши и громких манифестов."},
+ {n:7,c:"ЧИ",t:"Интуиция возможностей",d:"Блокирует иллюзорные идеи: «Это не сработает, потому что 90% подобных проектов рушатся в первый месяц»."},
+ {n:8,c:"БЛ",t:"Структурная логика",d:"Фоном моментально видит логические неувязки в любых теориях, легко разбивая их без подготовки."}]},
+{id:"lie",q:"gamma",code:"ЛИЭ",nick:"Джек Лондон",full:"Логико-интуитивный экстраверт",role:"Предприниматель и экспериментатор",motto:"«Время — деньги! Запускаем стартап прямо сейчас»",f:[
+ {n:1,c:"ЧЛ",t:"Деловая логика",d:"Непрерывный поиск эффективности, оптимизации и заработка. Видит материальный мир как поле для выгодных действий."},
+ {n:2,c:"БИ",t:"Интуиция времени",d:"Потрясающее чувство момента. Опережает конкурентов, быстро внедряет инновации и любит динамичные авантюры."},
+ {n:3,c:"ЧЭ",t:"Этика эмоций",d:"Пытается быть «своим парнем», душой компании, много шутит, но его юмор и эмоциональность могут выглядеть немного утрированно."},
+ {n:4,c:"БС",t:"Сенсорика ощущений",d:"Абсолютно не умеет отдыхать и ухаживать за здоровьем. Может ходить в дырявых кроссовках и забывать помыться в походе."},
+ {n:5,c:"БЭ",t:"Этика отношений",d:"Ищет морального ориентира. Нуждается в партнере, который четко скажет, кто ему друг, а кто враг."},
+ {n:6,c:"ЧС",t:"Силовая сенсорика",d:"Загорается от сложных вызовов, спортивных состязаний и работы в условиях жесткой конкуренции."},
+ {n:7,c:"БЛ",t:"Структурная логика",d:"Сходу отбрасывает пустые формальности и сухую бюрократию: «Нам некогда бумажки писать, надо делать!»."},
+ {n:8,c:"ЧИ",t:"Интуиция возможностей",d:"Фоном видит миллион открытых дверей и альтернативных путей, если один из вариантов неожиданно закроется."}]},
+{id:"esi",q:"gamma",code:"ЭСИ",nick:"Драйзер",full:"Этико-сенсорный интроверт",role:"Хранитель морали и защитник",motto:"«Совесть — главный закон, и я его соблюдаю»",f:[
+ {n:1,c:"БЭ",t:"Этика отношений",d:"Сканер моральных качеств. Моментально чувствует фальшь, предательство, непорядочность и строго делит людей на «своих» и «чужих»."},
+ {n:2,c:"ЧС",t:"Силовая сенсорика",d:"Инструмент защиты своих моральных принципов и близких. Умеет дать жесткий и принципиальный отпор любому агрессору."},
+ {n:3,c:"БЛ",t:"Структурная логика",d:"Старается выглядеть исключительно логичным, правильным, законопослушным гражданином, ссылаясь на правила и нормативы."},
+ {n:4,c:"ЧИ",t:"Интуиция возможностей",d:"Ужасно не любит неопределенность и подвохи. В новых непроверенных вариантах видит прежде всего скрытую опасность."},
+ {n:5,c:"ЧЛ",t:"Деловая логика",d:"С благодарностью принимает четкие алгоритмы, помощь в работе, бизнесе и практической организации жизни."},
+ {n:6,c:"БИ",t:"Интуиция времени",d:"Расслабляется рядом с людьми, умеющими успокоить своевременным прогнозом и избавить от спешки."},
+ {n:7,c:"ЧЭ",t:"Этика эмоций",d:"Пресекает бурные ненастоящие эмоции и панику: «Перестань истерить, давай говорить по делу»."},
+ {n:8,c:"БС",t:"Сенсорика ощущений",d:"Фоном держит быт в чистоте, обеспечивает семью едой и порядком без долгих обсуждений процесса."}]},
+{id:"lse",q:"delta",code:"ЛСЭ",nick:"Штирлиц",full:"Логико-сенсорный экстраверт",role:"Управляющий и хозяин",motto:"«Если делать — то идеально и с выверенным качеством»",f:[
+ {n:1,c:"ЧЛ",t:"Деловая логика",d:"Властелин рабочих процессов, технологий и трудовой дисциплины. Качественно организует любое дело на 100%."},
+ {n:2,c:"БС",t:"Сенсорика ощущений",d:"Инструмент создания качественного стандарта. Заботится об удобстве рабочего места, добротной одежде и хорошей еде."},
+ {n:3,c:"ЧЭ",t:"Этика эмоций",d:"На людях демонстративно гостеприимен, приветлив, громко шутит, чтобы показать себя общительным и веселым человеком."},
+ {n:4,c:"БИ",t:"Интуиция времени",d:"Опоздания, неопределенные сроки и необходимость ждущего простаивания выбивают из колеи. Не терпит срыва графиков."},
+ {n:5,c:"БЭ",t:"Этика отношений",d:"Потребность в душевной теплоте, глубокой верности и искреннем, стабильном отношении без подводных камней."},
+ {n:6,c:"ЧИ",t:"Интуиция возможностей",d:"Радуется новым оригинальным идеям, если они помогают решить задачи еще эффективнее и раскрыть потенциал."},
+ {n:7,c:"БЛ",t:"Структурная логика",d:"Останавливает пустые теоретические споры: «Хватит размышлять о теории, давайте смотреть на практику»."},
+ {n:8,c:"ЧС",t:"Силовая сенсорика",d:"Фоном защищает свою территорию и подчиненных, обладая огромным запасом воли, но без лишнего нажима."}]},
+{id:"eii",q:"delta",code:"ЭИИ",nick:"Достоевский",full:"Этико-интуитивный интроверт",role:"Гуманист и психолог",motto:"«В каждом человеке есть светлая душа, надо лишь понять»",f:[
+ {n:1,c:"БЭ",t:"Этика отношений",d:"Глубочайшее понимание морали, сочувствие, тонкий анализ человеческих взаимоотношений, эмпатия и прощение."},
+ {n:2,c:"ЧИ",t:"Интуиция возможностей",d:"Видит скрытый потенциал развития личности. Умеет мягко направить человека к самосовершенствованию."},
+ {n:3,c:"БЛ",t:"Структурная логика",d:"Старается быть понятным, логичным, разумно обоснованным в разговоре, приводить системные аргументы."},
+ {n:4,c:"ЧС",t:"Силовая сенсорика",d:"Агрессия, крики, принуждение и грубая сила вызывают физическое неприятие и глубокую травму."},
+ {n:5,c:"ЧЛ",t:"Деловая логика",d:"Очень нуждается в помощи по практическим делам: как починить, как оформить документы, как организовать работу."},
+ {n:6,c:"БС",t:"Сенсорика ощущений",d:"Расцветает от бытовой заботы, уютной атмосферы и предложенного чая с вкусным печеньем."},
+ {n:7,c:"ЧЭ",t:"Этика эмоций",d:"Тихо, но твердо останавливает грубые эмоциональные вспышки: «Не нужно повышать голос, это не поможет»."},
+ {n:8,c:"БИ",t:"Интуиция времени",d:"Фоном отлично чувствует чужое время, не заставляет себя ждать и умеет вовремя проявить терпение."}]},
+{id:"iee",q:"delta",code:"ИЭЭ",nick:"Гексли",full:"Интуитивно-этический экстраверт",role:"Советчик и скаут талантов",motto:"«Вокруг столько интересного и классных людей!»",f:[
+ {n:1,c:"ЧИ",t:"Интуиция возможностей",d:"Видит уникальность каждого человека и шансы, которые упускают другие. Неиссякаемый фонтан идей и интереса к жизни."},
+ {n:2,c:"БЭ",t:"Этика отношений",d:"Легко устанавливает контакт с кем угодно. Умеет расположить к себе за 3 секунды и выстроить нужные связи."},
+ {n:3,c:"ЧС",t:"Силовая сенсорика",d:"При знакомстве может поиграть волевыми мышцами или показать твердость, но быстро возвращается к образу милого и контактного человека."},
+ {n:4,c:"БЛ",t:"Структурная логика",d:"Скучные отчеты, сухие таблицы, кропотливая въедливая логика вызывают непреодолимое желание убежать на край света."},
+ {n:5,c:"БС",t:"Сенсорика ощущений",d:"Обожает, когда о нем заботятся на физическом уровне: кормят, одевают по погоде и устраивают уютное гнездышко."},
+ {n:6,c:"ЧЛ",t:"Деловая логика",d:"Включается в дело, когда ему дают четкую, эффективную инструкцию «как сделать быстро и получить результат»."},
+ {n:7,c:"БИ",t:"Интуиция времени",d:"Жестко ограничивает тех, кто пытается его торопить: «Не торопи меня, я сам знаю свой темп!»."},
+ {n:8,c:"ЧЭ",t:"Этика эмоций",d:"Фоном постоянно подстраивает эмоции под собеседника, создавая легкую и непринужденную атмосферу."}]},
+{id:"sli",q:"delta",code:"СЛИ",nick:"Габен",full:"Сенсорно-логический интроверт",role:"Мастер и минималист",motto:"«Минимум движений — максимум комфорта и пользы»",f:[
+ {n:1,c:"БС",t:"Сенсорика ощущений",d:"Гений телесного и физического удобства. Чувствует эргономику, материалы, сигналы тела и природу идеального отдыха."},
+ {n:2,c:"ЧЛ",t:"Деловая логика",d:"Золотые руки. Умеет починить, сделать или наладить любой механизм с минимальными энергозатратами."},
+ {n:3,c:"БИ",t:"Интуиция времени",d:"Старается выглядеть пунктуальным человеком, планирует свои дела заранее, но внутренне не любит спешки."},
+ {n:4,c:"ЧЭ",t:"Этика эмоций",d:"Истерики, громкий эмоциональный шантаж и бурное проявление чувств вызывают желание немедленно уйти в затворничество."},
+ {n:5,c:"ЧИ",t:"Интуиция возможностей",d:"Втягивается в общение с людьми, которые приносят оригинальные идеи, увлечения и открывают новые горизонты."},
+ {n:6,c:"БЭ",t:"Этика отношений",d:"Раскрывается, когда чувствует тихое, теплое, доброжелательное и искреннее отношение без эмоционального давления."},
+ {n:7,c:"ЧС",t:"Силовая сенсорика",d:"Спокойно и намертво игнорирует попытки силового давления: сдвинуть его с места против воли физически невозможно."},
+ {n:8,c:"БЛ",t:"Структурная логика",d:"Фоном умеет четко и без лишних слов организовать рабочую схему так, чтобы все работало как часы."}]}
+];
+
+function pad(n){return ("0"+n).slice(-2)}
+
+function cardHTML(t){
+  var details="",map="";
+  var rc=QUADRAS[t.q]?QUADRAS[t.q].cl:QUADRAS.host;
+  BLOCKS.forEach(function(b,i){
+    var f1=t.f[i*2],f2=t.f[i*2+1];
+    var open=(i===0)?" open":"";
+    details+="<details class='tb-d' id='d-"+t.id+"-"+i+"' style='--c:"+b.cl+"'"+open+">"
+      +"<summary><span class='sum-ico'>▶</span><span class='b-slot'>"+b.slot+"</span><span class='b-name'>"+b.name+"</span><span class='b-sub'>"+b.sub+"</span></summary>"
+      +"<div class='b-body'>"
+      +funcHTML(f1)+funcHTML(f2)
+      +"</div></details>";
+  });
+  t.f.forEach(function(f){
+    map+="<button class='fmap' data-t='"+t.id+"' data-b='"+((f.n-1)>>1)+"' title='"+pad(f.n)+" · "+f.t+"'>"+pad(f.n)+"</button>";
+  });
+  return "<article class='tim-card reveal' data-q='"+t.q+"' id='c-"+t.id+"'>"
+    +"<span class='corner tl'></span><span class='corner tr'></span><span class='corner bl'></span><span class='corner br'></span>"
+    +"<div class='tc-head'><div class='tc-code'>"+t.code+"</div><div class='tc-quad' style='color:"+rc+";border-color:"+rc+"55'>"+t.q.toUpperCase()+"</div></div>"
+    +"<h3 class='tc-nick'>"+t.nick+"</h3>"
+    +"<p class='tc-full'>"+t.full+"</p>"
+    +"<p class='tc-role'>"+t.role+"</p>"
+    +"<blockquote class='tc-motto'>"+t.motto+"</blockquote>"
+    +"<div class='func-map'>"+map+"</div>"
+    +"<div class='tc-blocks'>"+details+"</div>"
+    +"</article>";
+}
+function funcHTML(f){
+  return "<div class='func'>"
+    +"<div class='func-top'><span class='f-num'>"+pad(f.n)+"</span><span class='f-pos'>"+POS[f.n]+"</span><span class='f-name'>"+f.c+" — "+f.t+"</span></div>"
+    +"<p>"+f.d+"</p></div>";
+}
+
+var root=document.getElementById("quadra-root");
+Object.keys(QUADRAS).forEach(function(k){
+  if(k==="host")return;
+  var q=QUADRAS[k];
+  var box=document.createElement("section");
+  box.className="quadra";
+  box.id="quadra-"+k;
+  box.style.setProperty("--qc",q.cl);
+  var head="<div class='quadra-head reveal'>"
+    +"<div class='q-roman'>"+q.num+"</div>"
+    +"<div><h2>"+q.name+"</h2><div class='q-tag'>"+q.tag+"</div></div></div>";
+  var grid=document.createElement("div");
+  grid.className="cards-grid";
+  grid.id="grid-"+k;
+  TIMS.forEach(function(t){
+    if(t.q===k){grid.insertAdjacentHTML("beforeend",cardHTML(t));}
+  });
+  box.innerHTML=head;
+  box.appendChild(grid);
+  root.appendChild(box);
+});
+
+var searchEl=document.getElementById("search");
+var chips=document.querySelectorAll(".qchip");
+var curQ="all";
+function applyFilter(){
+  var q=searchEl.value.toLowerCase().trim();
+  var shown=0;
+  TIMS.forEach(function(t){
+    var card=document.getElementById("c-"+t.id);
+    var inQ=(curQ==="all")||(t.q===curQ);
+    var hay=(t.code+" "+t.nick+" "+t.full+" "+t.role+" "+t.motto).toLowerCase();
+    var match=hay.indexOf(q)>-1;
+    var ok=inQ&&match;
+    card.classList.toggle("hidden",!ok);
+    if(ok)shown++;
+  });
+  document.querySelectorAll(".quadra").forEach(function(sec){
+    var visible=sec.querySelector(".tim-card:not(.hidden)");
+    sec.style.display=visible?"block":"none";
+  });
+  document.getElementById("qcount").textContent=shown;
+}
+chips.forEach(function(ch){
+  ch.addEventListener("click",function(){
+    chips.forEach(function(c){c.classList.remove("active")});
+    ch.classList.add("active");
+    curQ=ch.dataset.q;
+    applyFilter();
+  });
+});
+searchEl.addEventListener("input",applyFilter);
+
+function jumpTo(det){
+  var id=det.getAttribute("data-b");
+  var d=document.getElementById("d-"+det.dataset.t+"-"+id);
+  if(!d)return;
+  d.open=true;
+  d.scrollIntoView({behavior:"smooth",block:"center"});
+}
+document.getElementById("quadra-root").addEventListener("click",function(e){
+  var b=e.target.closest(".fmap, .fmap[data-b]");
+  if(b&&b.classList.contains("fmap"))jumpTo(b);
+});
+
+var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(en.isIntersecting){
+      var idx=Array.prototype.indexOf.call(en.target.parentElement.children,en.target);
+      en.target.style.transitionDelay=(Math.min(idx,8)*55)+"ms";
+      en.target.classList.add("visible");
+      io.unobserve(en.target);
+    }
+  });
+},{threshold:.12});
+document.querySelectorAll(".reveal").forEach(function(el){io.observe(el)});
+
+var nav=document.getElementById("nav");
+var totop=document.getElementById("totop");
+window.addEventListener("scroll",function(){
+  var y=window.scrollY;
+  nav.classList.toggle("scrolled",y>30);
+  totop.classList.toggle("show",y>600);
+});
+totop.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+
+var secObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    var link=document.querySelector('.nav-links a[href="#'+en.target.id+'"]');
+    if(link){link.classList.toggle("active",en.isIntersecting&&en.intersectionRatio>0.15);}
+  });
+},{threshold:[0.15,0.6]});
+["theory","types"].forEach(function(id){var el=document.getElementById(id);if(el)secObs.observe(el);});
+["quadra-alpha","quadra-beta","quadra-gamma","quadra-delta"].forEach(function(id){var el=document.getElementById(id);if(el)secObs.observe(el);});
+
+var typeOut=new (function(){
+  var el=document.getElementById("typeout");
+  var i=0,pos=0,txt="",del=false;
+  var codes=["ИЛЭ","СЭИ","ЭСЭ","ЛИИ","ЭИЭ","СЛЭ","ИЭИ","ЛСИ","СЭЭ","ИЛИ","ЛИЭ","ЭСИ","ЛСЭ","ЭИИ","ИЭЭ","СЛИ"];
+  setInterval(function(){
+    var cur=codes[i];
+    if(!del){
+      txt=cur.slice(0,++pos);
+      if(pos===cur.length){del=true;setTimeout(function(){},900);}
+    }else{
+      txt=cur.slice(0,--pos);
+      if(pos===0){del=false;i=(i+1)%codes.length;}
+    }
+    el.textContent=txt;
+  },110);
+});
+
+var cv=document.getElementById("bg");
+var ctx=cv.getContext("2d");
+var W,H,stars=[],shoot=null,mx=0,my=0,dpr=Math.min(window.devicePixelRatio||1,2);
+function resize(){
+  W=window.innerWidth;H=window.innerHeight;
+  cv.width=W*dpr;cv.height=H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  build();
+}
+function build(){
+  var n=Math.min(220,Math.floor(W*H/9000));
+  stars=[];
+  for(var i=0;i<n;i++){
+    stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,a:Math.random()*Math.PI*2,sp:Math.random()*.02+.004,d:Math.random()*.6+.4});
+  }
+}
+function starAt(sx,sy,sr,sa){
+  ctx.globalAlpha=sa;ctx.fillStyle="#cfe0ff";ctx.beginPath();ctx.arc(sx,sy,sr,0,7);ctx.fill();
+}
+function tick(){
+  ctx.clearRect(0,0,W,H);
+  var t=Date.now()*.001;
+  stars.forEach(function(s){
+    var oo=(Math.sin(t+s.a)+1)/2;
+    var x=s.x+mx*s.d*24;
+    var y=s.y+my*s.d*24;
+    starAt(x,y,s.r*(.6+oo*.8),.22+.55*oo);
+  });
+  if(!shoot&&Math.random()<.004){
+    shoot={x:Math.random()*W*.7+W*.1,y:Math.random()*-120,vx:-(4+Math.random()*4),vy:6+Math.random()*6,life:1};
+  }
+  if(shoot){
+    shoot.x+=shoot.vx;shoot.y+=shoot.vy;shoot.life-=.012;
+    ctx.globalAlpha=shoot.life;ctx.strokeStyle="#9fd8ff";
+    ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(shoot.x,shoot.y);
+    ctx.lineTo(shoot.x-shoot.vx*6,shoot.y-shoot.vy*6);ctx.stroke();
+    if(shoot.life<=0||shoot.y>H+40)shoot=null;ctx.globalAlpha=1;
+  }
+  requestAnimationFrame(tick);
+}
+window.addEventListener("mousemove",function(e){
+  mx=(e.clientX/W-.5)*2;my=(e.clientY/H-.5)*2;
+});
+window.addEventListener("resize",resize);
+resize();tick();
+</script>
+</body>
+</html>
